@@ -63,10 +63,8 @@ class Tokenizer(object):
     def gen_tokenize(self, string):
         """Token generator  
 
-        @param string -- text to be divided into tokens
+        @param string -- text to be divided into tokens      
         
-        @return words -- list of tokens
-
         """
         if (not isinstance(string, str) or len(string) == 0):
             raise TypeError('Inappropriate argument type.')
