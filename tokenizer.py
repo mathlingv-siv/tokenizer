@@ -2,26 +2,6 @@
     
 """
 import unicodedata
-
-def what_type(c):
-    """method for identifying the type of the token
-
-    """
-    category = ''
-    if c.isalpha():
-        category = 'a'
-    else:
-        if c.isdigit():
-            category = 'd'            
-        else:
-            if c.isspace():
-                category = 's'
-            else:
-                if unicodedata.category(c)[0] == 'P':
-                    category = 'p'
-                else:
-                    category = 'o'
-    return category
                   
 class Token(object):
     """Class for tokens the text is divided into
@@ -130,7 +110,26 @@ class Tokenizer(object):
         if character.isalpha():
                 token = string[a:index+1]
                 t = Token(a,token)
-                yield (t)
+                yield (t)                
+                
+    @staticmethod            
+    def what_type(c):
+        """method for identifying the type of the token
+
+        """        
+        category = ''
+        if c.isalpha():
+            category = 'a'
+        elif c.isdigit():
+            category = 'd'            
+        elif c.isspace():
+            category = 's'
+        elif unicodedata.category(c)[0] == 'P':
+            category = 'p'
+        else:
+            category = 'o'
+        return category  
+                    
     def type_aware_tokenize(self, string):
         """type aware token generator
 
@@ -138,17 +137,17 @@ class Tokenizer(object):
         if (not isinstance(string, str) or len(string) == 0):
             raise TypeError('Inappropriate argument type.')
         for index, character in enumerate(string):
-            category = what_type(character)
+            category = Tokenizer.what_type(character)
             # find the beginning of a token
             # it's either the first character in the string
             # or the character the type of which is different from the type of the previous one
-            if index == 0 or not category == what_type(string[index-1]):
+            if index == 0 or category != Tokenizer.what_type(string[index-1]):
                 a = index
             # check if we haven't reached the end of the string
             # we check the following symbol, so we need to make sure that there's one
             if (index+1)<=(len(string)-1):
                 # find the end of the token
-                if category != what_type(string[index+1]):
+                if category != Tokenizer.what_type(string[index+1]):
                     token = string[a:index+1]
                     t = Token_type_aware(a, token, category)
                     a = index+1
