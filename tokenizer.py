@@ -4,6 +4,9 @@
 import unicodedata
 
 def what_type(c):
+    """method for identifying the type of the token
+
+    """
     category = ''
     if c.isalpha():
         category = 'a'
