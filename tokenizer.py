@@ -137,17 +137,17 @@ class Tokenizer(object):
         if (not isinstance(string, str) or len(string) == 0):
             raise TypeError('Inappropriate argument type.')
         for index, character in enumerate(string):
-            category = Tokenizer.what_type(character)
+            category = self.what_type(character)
             # find the beginning of a token
             # it's either the first character in the string
             # or the character the type of which is different from the type of the previous one
-            if index == 0 or category != Tokenizer.what_type(string[index-1]):
+            if index == 0 or category != self.what_type(string[index-1]):
                 a = index
             # check if we haven't reached the end of the string
             # we check the following symbol, so we need to make sure that there's one
             if (index+1)<=(len(string)-1):
                 # find the end of the token
-                if category != Tokenizer.what_type(string[index+1]):
+                if category != self.what_type(string[index+1]):
                     token = string[a:index+1]
                     t = Token_type_aware(a, token, category)
                     a = index+1
