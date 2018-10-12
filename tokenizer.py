@@ -43,7 +43,7 @@ class Token_type_aware(object):
         """Override what to return when print tokens
 
         """
-        return '"' + self.string + '"' + '[' + str(self.position) + ']' + '{' + self.type + '}'
+        return '{' + self.type + '}' + '"' + self.string + '"' + '[' + str(self.position) + ']' 
 
 
 class Tokenizer(object):
