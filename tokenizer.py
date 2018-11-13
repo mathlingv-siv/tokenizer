@@ -1,10 +1,11 @@
-"""This module contains methods for tokenizing a string of characters
+"""This module contains a method for tokenizing a string of characters
     
 """
 import unicodedata
-                  
+
+                       
 class Token(object):
-    """Class for tokens the text is divided into
+    """Class for alphabetic tokens the text is divided into
         
     """    
     def __init__(self, p, s):
@@ -22,7 +23,8 @@ class Token(object):
 
         """
         return self.string + ' ' + str(self.position)
-    
+
+
 class Token_type_aware(object):
     """Class for different kinds of tokens the text is divided into
 
@@ -47,7 +49,7 @@ class Token_type_aware(object):
 
 
 class Tokenizer(object):
-    """Class that contains methods for tokenizing a string of characters
+    """Class that contains method for tokenizing a string of characters
         
     """
     def tokenize(self, string):
@@ -87,8 +89,8 @@ class Tokenizer(object):
     def gen_tokenize(self, string):
         """Token generator  
 
-        @param string -- text to be divided into tokens      
-        
+        @param string -- text to be divided into tokens
+
         """
         if (not isinstance(string, str) or len(string) == 0):
             raise TypeError('Inappropriate argument type.')
@@ -110,8 +112,8 @@ class Tokenizer(object):
         if character.isalpha():
                 token = string[a:index+1]
                 t = Token(a,token)
-                yield (t)                
-                
+                yield (t)
+
     @staticmethod            
     def what_type(c):
         """method for identifying the type of the token
@@ -128,8 +130,9 @@ class Tokenizer(object):
             category = 'p'
         else:
             category = 'o'
-        return category  
-                    
+        return category    
+
+        
     def type_aware_tokenize(self, string):
         """type aware token generator
 
@@ -156,13 +159,11 @@ class Tokenizer(object):
         token = string[a:index+1]
         t = Token_type_aware(a, token, category)
         yield (t)              
-                
+        
 
 def main():
     text = Tokenizer()
-    print(text.tokenize('this, is a ??? test?'))
-    for i in text.gen_tokenize('this, is a ??? test?'):
-        print(i)
+    print(text.tokenize('this, is a ??? test?'))    
     for i in text.type_aware_tokenize('this, is a ??? test?'):
         print(i)
     

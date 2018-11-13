@@ -11,7 +11,8 @@ class TestTokenizer(unittest.TestCase):
         """create an object of Tokenizer class
 
         """
-        self.t = tokenizer.Tokenizer()    
+        self.t = tokenizer.Tokenizer()
+        
    
     def test_is_string(self):
         """test if the programm is working correctly
@@ -143,7 +144,7 @@ class TestTokenizer(unittest.TestCase):
         self.assertEqual(text[0].position, 3)
         self.assertEqual(text[1].string, 'And')
         self.assertEqual(text[1].position, 9)
-       
+
     def test_type_string(self):
         """test if the program assigns the right type
         to alphabetic characters
@@ -212,6 +213,7 @@ class TestTokenizer(unittest.TestCase):
         array = [25, 'array', '79 - 0']
         with self.assertRaises(TypeError):
             list(self.t.type_aware_tokenize(array))
+            
 
 
 if __name__=='__main__':
