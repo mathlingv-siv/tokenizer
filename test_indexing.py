@@ -4,7 +4,7 @@ import os
 import shelve
 
 
-class TestTokenizer(unittest.TestCase):
+class TestIndexer(unittest.TestCase):
     def setUp(self):
         self.i = tokenizer.Indexer('database')
         
