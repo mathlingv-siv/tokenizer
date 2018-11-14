@@ -22,19 +22,18 @@ class TestIndexer(unittest.TestCase):
         f.write('this is a test')
         f.close()        
         self.i.indexing('test.txt')
-        db = shelve.open('database')
-        db_dict = dict(db)
+        self.i.__del__()
+        db_dict = dict(shelve.open('database')
         dictionary = {
-            'this':{'test.txt': '[0, 4]'},
-            'is':{'test.txt': '[5, 7]'},
-            'a':{'test.txt':'[8, 9]'},
-            'test':{'test.txt':'[10, 14]'}
+            'this':{'test.txt':[Position(0, 4)]},
+            'is':{'test.txt':[Position(5, 7)]},
+            'a':{'test.txt':[Position(8, 9)]},
+            'test':{'test.txt':[Position(10, 14)]}
         }
         self.assertEqual(db_dict, dictionary)      
-        os.remove('test.txt')
-        db.close()
+        os.remove('test.txt')        
         for filename in os.listdir(os.getcwd()):
-            if filename == 'database' and filename.startswith('database.'):
+            if filename == 'database' or filename.startswith('database.'):
                 os.remove(filename)
 
     def test_indexing_multiple_files(self):
@@ -46,22 +45,21 @@ class TestIndexer(unittest.TestCase):
         s.write('yes, it is a test')
         s.close()        
         self.i.indexing('ts.txt')
-        db = shelve.open('database')
-        db_dict = dict(db)
+        self.i.__del__()
+        db_dict = dict(shelve.open('database')
         dictionary = {
-            'is':{'tf.txt':'[0, 2]', 'ts.txt':'[8, 10]'},
-            'this':{'tf.txt':'[3, 7]'},
-            'a':{'tf.txt':'[8, 9]', 'ts.txt':'[11, 12]'},
-            'test':{'tf.txt':'[10, 14]', 'ts.txt':'[13, 17]'},
-            'yes':{'ts.txt':'[0, 3]'},
-            'it':{'ts.txt':'[5, 7]'}
+            'is':{'tf.txt':[Position(0, 2)], 'ts.txt':[Position(8, 10)]},
+            'this':{'tf.txt':[Position(3, 7)]},
+            'a':{'tf.txt':[Position(8, 9)], 'ts.txt':[Position(11, 12)]},
+            'test':{'tf.txt':[Position(10, 14)], 'ts.txt':[Position(13, 17)]},
+            'yes':{'ts.txt':[Position(0, 3)]},
+            'it':{'ts.txt':[Position(5, 7)]}
         }
         self.assertEqual(db_dict, dictionary)
         os.remove('ts.txt')
-        os.remove('tf.txt')
-        db.close()
+        os.remove('tf.txt')        
         for filename in os.listdir(os.getcwd()):
-            if filename == 'database' and filename.startswith('database.'):
+            if filename == 'database' or filename.startswith('database.'):
                 os.remove(filename)
         
 
