@@ -22,7 +22,7 @@ class TestIndexer(unittest.TestCase):
         f.write('this is a test')
         f.close()        
         self.i.indexing('test.txt')
-        self.i.__del__()
+        del self.i
         db_dict = dict(shelve.open('database')
         dictionary = {
             'this':{'test.txt':[Position(0, 4)]},
@@ -45,7 +45,7 @@ class TestIndexer(unittest.TestCase):
         s.write('yes, it is a test')
         s.close()        
         self.i.indexing('ts.txt')
-        self.i.__del__()
+        del self.i
         db_dict = dict(shelve.open('database')
         dictionary = {
             'is':{'tf.txt':[Position(0, 2)], 'ts.txt':[Position(8, 10)]},
