@@ -2,7 +2,7 @@ import unittest
 import tokenizer
 import os
 import shelve
-
+import indexer
 
 class TestIndexer(unittest.TestCase):
     """Class that contains methods for testing
@@ -10,10 +10,10 @@ class TestIndexer(unittest.TestCase):
     
     """
     def setUp(self):
-        """create an object of Indexer class
+        """create an object of Indexer class 
 
         """
-        self.i = tokenizer.Indexer('database')
+        self.i = indexer.Indexer('database')
         
     def test_indexing_is_file(self):
         """test if the program is working correctly
@@ -32,7 +32,7 @@ class TestIndexer(unittest.TestCase):
         """test if the program is working correctly
         when indexing a single file
         
-        """
+        """       
         f = open('test.txt', 'w')
         f.write('this is a test')
         f.close()        
@@ -44,45 +44,46 @@ class TestIndexer(unittest.TestCase):
             'a':{'test.txt':[Position(8, 9)]},
             'test':{'test.txt':[Position(10, 14)]}
         }
-        self.assertEqual(db_dict, dictionary)      
-        os.remove('test.txt')    
+        self.assertEqual(db_dict, dictionary) 
 
     def test_indexing_multiple_files(self):
         """test if the program is working correctly
         when indexing multiple files
         
-        """
-        p = open('tf.txt', 'w')
+        """        
+        p = open('test.txt', 'w')
         p.write('is this a test?')
         p.close()        
-        self.i.indexing('tf.txt')        
+        self.i.indexing('test.txt')        
         s = open('ts.txt', 'w')
         s.write('yes, it is a test')
-        s.close()        
+        s.close()  
         self.i.indexing('ts.txt')
         db_dict = dict(shelve.open('database'))
         dictionary = {
-            'is':{'tf.txt':[Position(0, 2)], 'ts.txt':[Position(8, 10)]},
-            'this':{'tf.txt':[Position(3, 7)]},
-            'a':{'tf.txt':[Position(8, 9)], 'ts.txt':[Position(11, 12)]},
-            'test':{'tf.txt':[Position(10, 14)], 'ts.txt':[Position(13, 17)]},
-            'yes':{'ts.txt':[Position(0, 3)]},
-            'it':{'ts.txt':[Position(5, 7)]}
+            'is': {'test.txt': [Position(0, 2)], 'ts.txt': [Position(8, 10)]},
+            'this': {'test.txt': [Position(3, 7)]},
+            'a': {'test.txt': [Position(8, 9)], 'ts.txt': [Position(11, 12)]},
+            'test': {'test.txt': [Position(10, 14)], 'ts.txt': [Position(13, 17)]},
+            'yes': {'ts.txt': [Position(0, 3)]},
+            'it': {'ts.txt': [Position(5, 7)]}
         }
         self.assertEqual(db_dict, dictionary)
-        os.remove('ts.txt')
-        os.remove('tf.txt')     
 
     def tearDown(self):
-        """delete Indexer object and database files
+        """delete Indexer object, text and database files
         
         """
         del self.i
-        for filename in os.listdir(os.getcwd()):
+        if 'test.txt' in os.listdir(os.getcwd()):
+            os.remove('test.txt')
+        if 'ts.txt' in os.listdir(os.getcwd()):
+            os.remove('ts.txt')
+        for filename in os.listdir(os.getcwd()):            
             if filename == 'database' or filename.startswith('database.'):
-                os.remove(filename)
-         
-        
+                os.remove(filename)    
+                
+
 class TestTokenizer(unittest.TestCase):
     """Class that contains methods for testing
     if the programm is working correctly in different cases
@@ -299,3 +300,4 @@ class TestTokenizer(unittest.TestCase):
 
 if __name__=='__main__':
     unittest.main()
+
