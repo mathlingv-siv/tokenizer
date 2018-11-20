@@ -1,4 +1,4 @@
-"""This module contains a method for tokenizing a string of characters
+"""This module contains methods for tokenizing a string of characters
     
 """
 import unicodedata
