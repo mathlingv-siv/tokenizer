@@ -34,7 +34,7 @@ class TestIndexer(unittest.TestCase):
         
         """       
         f = open('test.txt', 'w')
-        f.write('this is a test')
+        f.write('this is a test test')
         f.close()        
         self.i.indexing('test.txt')
         db_dict = dict(shelve.open('database'))
@@ -42,7 +42,7 @@ class TestIndexer(unittest.TestCase):
             'this':{'test.txt':[Position(0, 4)]},
             'is':{'test.txt':[Position(5, 7)]},
             'a':{'test.txt':[Position(8, 9)]},
-            'test':{'test.txt':[Position(10, 14)]}
+            'test':{'test.txt':[Position(10, 14), Position(15, 19)]}
         }
         self.assertEqual(db_dict, dictionary) 
 
