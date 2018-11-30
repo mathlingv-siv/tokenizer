@@ -84,7 +84,6 @@ class Tokenizer(object):
                 t = Token(a,token)
                 words.append(t)
         return words
-
     
     def gen_tokenize(self, string):
         """Token generator  
@@ -130,8 +129,7 @@ class Tokenizer(object):
             category = 'p'
         else:
             category = 'o'
-        return category    
-
+        return category   
         
     def type_aware_tokenize(self, string):
         """type aware token generator
@@ -158,7 +156,15 @@ class Tokenizer(object):
         # the last character in the string wasn't checked in the cycle  
         token = string[a:index+1]
         t = Token_type_aware(a, token, category)
-        yield (t)              
+        yield (t)             
+        
+    def words_and_numbers_tokenize(self, string):
+        """generates alphabetic and digital tokens
+
+        """
+        for word in self.type_aware_tokenize(string):
+            if word.type == 'a' or word.type == 'd':
+                yield word
         
 
 def main():
