@@ -49,7 +49,7 @@ class Token_type_aware(object):
 
 
 class Tokenizer(object):
-    """Class that contains method for tokenizing a string of characters
+    """Class that contains methods for tokenizing a string of characters
         
     """
     def tokenize(self, string):
