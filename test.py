@@ -4,6 +4,8 @@ import os
 import shelve
 import indexer
 from indexer import Position
+from indexer import Position_with_lines
+
 
 class TestIndexer(unittest.TestCase):
     """Class that contains methods for testing
@@ -23,13 +25,13 @@ class TestIndexer(unittest.TestCase):
         """
         with self.assertRaises(TypeError):
             self.i.indexing(345)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(FileNotFoundError):
             self.i.indexing('this is a test')
         array = [25, 'array', '79 - 0']
         with self.assertRaises(TypeError):
             self.i.indexing(array)
 
-    def test_indexing_create_database(self):
+    def test_indexing(self):
         """test if the program is working correctly
         when indexing a single file
         
@@ -70,6 +72,24 @@ class TestIndexer(unittest.TestCase):
             'it': {'ts.txt': [Position(5, 7)]}
         }
         self.assertEqual(db_dict, dictionary)
+        
+    def test_indexing_with_lines(self):
+        """test if the program is working correctly
+        when indexing a single file
+        
+        """       
+        f = open('test.txt', 'w')
+        f.write('this is\n a test\n test')
+        f.close()        
+        self.i.indexing_with_lines('test.txt')        
+        db_dict = dict(shelve.open('database'))
+        dictionary = {
+            'this': {'test.txt': [Position_with_lines(0, 4, 0)]},
+            'is': {'test.txt': [Position_with_lines(5, 7, 0)]},
+            'a': {'test.txt': [Position_with_lines(1, 2, 1)]},
+            'test': {'test.txt': [Position_with_lines(3, 7, 1), Position_with_lines(1, 5, 2)]}
+        }
+        self.assertEqual(db_dict, dictionary)
 
     def tearDown(self):
         """delete Indexer object, text and database files
@@ -82,8 +102,7 @@ class TestIndexer(unittest.TestCase):
         if 'test.txt' in os.listdir(os.getcwd()):
             os.remove('test.txt')
         if 'ts.txt' in os.listdir(os.getcwd()):
-            os.remove('ts.txt')
-    
+            os.remove('ts.txt')    
                 
 
 class TestTokenizer(unittest.TestCase):
@@ -95,8 +114,7 @@ class TestTokenizer(unittest.TestCase):
         """create an object of Tokenizer class
 
         """
-        self.t = tokenizer.Tokenizer()
-        
+        self.t = tokenizer.Tokenizer()        
    
     def test_is_string(self):
         """test if the programm is working correctly
@@ -162,7 +180,6 @@ class TestTokenizer(unittest.TestCase):
         self.assertEqual(text[0].position, 3)
         self.assertEqual(text[1].string, 'And')
         self.assertEqual(text[1].position, 9)
-
 
     def test_gen_is_string(self):
         """test if the programm is working correctly
