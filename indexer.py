@@ -84,10 +84,8 @@ class Indexer(object):
         """
         if not isinstance(filename, str):
             raise TypeError('Inappropriate argument type.')
-        if not filename in os.listdir(os.getcwd()):
-            raise FileNotFoundError('File not found.')
-        tokenizator = Tokenizer()
         text = open(filename)
+        tokenizator = Tokenizer()
         # divide text into alphabetic and digital tokens
         # add tokens, filenames and positions to the database
         for word in tokenizator.words_and_numbers_tokenize(text.read()):
@@ -107,10 +105,8 @@ class Indexer(object):
         """
         if not isinstance(filename, str):
             raise TypeError('Inappropriate argument type.')
-        if not filename in os.listdir(os.getcwd()):
-            raise FileNotFoundError('File not found.')
-        tokenizator = Tokenizer()
         text = open(filename)
+        tokenizator = Tokenizer()
         # divide text into alphabetic and digital tokens
         # add tokens, filenames and positions to the database
         for ln, line in enumerate(text):
