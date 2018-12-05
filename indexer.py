@@ -74,7 +74,7 @@ class Indexer(object):
         @param database_name -- filename of the database created
         
         """
-        self.database = shelve.open(database_name, writeback = True)
+        self.database = shelve.open(database_name, writeback=True)
 
     def indexing(self, filename):
         """Index a text file and fill in database
