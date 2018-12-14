@@ -24,7 +24,7 @@ class SearchEngine(object):
         """
         if not isinstance(query, str):
             raise TypeError('Inappropriate argumant type.')
-        if query == '' or not query in self.database:
+        if query == '' or query not in self.database:
             return {}
         else:
             return self.database[query]
