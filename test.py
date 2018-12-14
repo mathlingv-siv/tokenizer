@@ -7,6 +7,7 @@ from indexer import Position
 from indexer import Position_with_lines
 from search_engine import SearchEngine
 
+
 class TestSearchEngine(unittest.TestCase):
     """Class that contains methods for tetsing
     if the programm is working correcly in different cases
