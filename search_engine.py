@@ -26,8 +26,7 @@ class SearchEngine(object):
             raise TypeError('Inappropriate argumant type.')
         if query == '' or query not in self.database:
             return {}
-        else:
-            return self.database[query]
+        return self.database[query]
 
     def __del__(self):
         """Close database when searching is done
