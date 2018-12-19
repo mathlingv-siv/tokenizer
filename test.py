@@ -9,8 +9,8 @@ from search_engine import SearchEngine
 
 
 class TestSearchEngine(unittest.TestCase):
-    """Class that contains methods for tetsing
-    if the programm is working correcly in different cases
+    """Class that contains methods for testing
+    if search engine is working correcly in different cases
 
     """
     def setUp(self):
@@ -62,7 +62,7 @@ class TestSearchEngine(unittest.TestCase):
         self.assertEqual(result, {'test.txt': [Position_with_lines(0, 4, 1)],
                                   'tst.txt': [Position_with_lines(0, 4, 0)]})
 
-    def test_searching_multiple(self):
+    def test_searching_more_than_one_token(self):
         """test if the program is working correctly
         when searching for more than one word
         
@@ -83,7 +83,7 @@ class TestSearchEngine(unittest.TestCase):
 
 class TestIndexer(unittest.TestCase):
     """Class that contains methods for testing
-    if the programm is working correctly in different cases
+    if indexer is working correctly in different cases
     
     """
     def setUp(self):
@@ -181,7 +181,7 @@ class TestIndexer(unittest.TestCase):
 
 class TestTokenizer(unittest.TestCase):
     """Class that contains methods for testing
-    if the programm is working correctly in different cases
+    if tokenizer is working correctly in different cases
     
     """
     def setUp(self):
