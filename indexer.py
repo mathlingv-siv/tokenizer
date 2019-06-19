@@ -13,8 +13,8 @@ class Position(object):
     def __init__(self, start, end):
         """Create an instance of class Position
 
-        @start: position of the first character in the token
-        @end: position of the last character in the token
+        @param start: position of the first character in the token
+        @param end: position of the last character in the token
         
         """
         self.start = start
@@ -40,9 +40,9 @@ class Position_with_lines(object):
     def __init__(self, start, end, line):
         """Create an instance of class Position
 
-        @start: position of the first character in the token
-        @end: position of the last character in the token
-        @line: number of the line the token is in
+        @param start: position of the first character in the token
+        @param end: position of the last character in the token
+        @param line: number of the line the token is in
         
         """
         self.start = start
