@@ -13,8 +13,8 @@ class Position(object):
     def __init__(self, start, end):
         """Create an instance of class Position
 
-        @start -- position of the first character in the token
-        @end -- position of the last character in the token
+        @start: position of the first character in the token
+        @end: position of the last character in the token
         
         """
         self.start = start
@@ -40,9 +40,9 @@ class Position_with_lines(object):
     def __init__(self, start, end, line):
         """Create an instance of class Position
 
-        @start -- position of the first character in the token
-        @end -- position of the last character in the token
-        @line -- number of the line the token is in
+        @start: position of the first character in the token
+        @end: position of the last character in the token
+        @line: number of the line the token is in
         
         """
         self.start = start
@@ -71,7 +71,7 @@ class Indexer(object):
     def __init__(self, database_name):
         """Create an instance of class Indexer
 
-        @param database_name -- filename of the database created
+        @param database_name: filename of the database created
         
         """
         self.database = shelve.open(database_name, writeback=True)
@@ -79,7 +79,7 @@ class Indexer(object):
     def indexing(self, filename):
         """Index a text file and fill in database
 
-        @param filename -- name of the text file that is to be indexed
+        @param filename: name of the text file that is to be indexed
 
         """
         if not isinstance(filename, str):
@@ -100,7 +100,7 @@ class Indexer(object):
         """Index a text file and fill in database
         remembering line numbers in the text file
 
-        @param filename -- name of the text file that is to be indexed
+        @param filename: name of the text file that is to be indexed
 
         """
         if not isinstance(filename, str):
