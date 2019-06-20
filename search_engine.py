@@ -37,7 +37,7 @@ class Context_Window(object):
         left = re.search(left_pattern, leftcontext)
         right = re.search(right_pattern, rightcontext)
         # determine the boundaries of context window
-        if left == None:
+        if left is None:
             self.start = 0
         else:
             self.start = self.start - left.start()
@@ -115,7 +115,7 @@ class SearchEngine(object):
         @param position: Position_with_lines object
         @param window: size of the context window (how many words
         should be found on the right and  on the left of the word)
-        @return dictionary: object of Context_Window class, containing positions
+        @return: object of Context_Window class, containing positions
         and context window of the searched word
         """
         if not isinstance(filename, str):
@@ -127,7 +127,8 @@ class SearchEngine(object):
             for ln, string in enumerate(filetext):
                 if ln == position.line:
                     text = string
-                    found = True        
+                    found = True
+                    break
         if not found:
             raise ValueError('Line not found')        
         if position.end > len(text) or position.end <= position.start:
@@ -143,16 +144,15 @@ class SearchEngine(object):
                 word_found = True
         if word_found == False:
             raise TypeError('Word not found')
-        right_context = list(tokenization.words_and_numbers_tokenize(text[position.start:]))
-        left_context = list(tokenization.words_and_numbers_tokenize(text[:position.end]))
-        left_context.reverse()
-        for i, token in enumerate(left_context):
+        right_context = text[position.start:]
+        left_context = text[:position.end][::-1]
+        for i, token in enumerate(tokenization.words_and_numbers_tokenize(left_context)):
             if i == window:
-                start = token.position
+                start = position.end - token.position - len(token.string)
                 break        
-        for i, token in enumerate(right_context):
+        for i, token in enumerate(tokenization.words_and_numbers_tokenize(right_context)):
             if len(right_context) == 1:
-                end = position.end
+                end = position.end 
             elif i == window:
                 end = position.start + token.position + len(token.string)
                 break
@@ -162,8 +162,8 @@ class SearchEngine(object):
         context = Context_Window([position], start, end, text)
         return context
 
-    def unite_windows(self, dictionary):
-        """intersect context windows
+    def unite_intersected_windows(self, dictionary):
+        """intersect and unite context windows
         @param: dictionary {filename: context windows}
         @return: dictionary {filename: united context windows}
 
