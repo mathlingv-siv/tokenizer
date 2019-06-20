@@ -1,4 +1,4 @@
-"""this module contains methods for working with a web werver
+"""this module contains methods for working with a web server
 
 """
 from http.server import BaseHTTPRequestHandler, HTTPServer
