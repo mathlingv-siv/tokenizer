@@ -1,3 +1,6 @@
+"""this module contains methods for working with a web werver
+
+"""
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
@@ -19,7 +22,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                     </body>
                 </html>
                 """
-        self.wfile.write(bytes(html, encoding="UTF-8"))
+        self.wfile.write(bytes(html, encoding="utf-8"))
 
 
 def main():
