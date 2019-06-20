@@ -151,14 +151,9 @@ class SearchEngine(object):
                 start = position.end - token.position - len(token.string)
                 break        
         for i, token in enumerate(tokenization.words_and_numbers_tokenize(right_context)):
-            if len(right_context) == 1:
-                end = position.end 
-            elif i == window:
+            if i == window:
                 end = position.start + token.position + len(token.string)
-                break
-            else:
-                if window >= len(right_context):
-                    end = position.start + right_context[-1].position + len(right_context[-1].string)
+                break            
         context = Context_Window([position], start, end, text)
         return context
 
@@ -199,7 +194,7 @@ class SearchEngine(object):
                 pos.append(cw)
             dic.setdefault(key, []).extend(pos)
             pos = []
-        dictionary = self.unite_windows(dic)
+        dictionary = self.unite_intersected_windows(dic)
         return dictionary
 
     def search_extended_context(self, query, window):
@@ -214,7 +209,7 @@ class SearchEngine(object):
         for contexts in con.values():
             for context in contexts:
                 context.extend_window()
-        dic = self.unite_windows(con)
+        dic = self.unite_intersected_windows(con)
         return dic
 
     def search_highlighted_context(self, query, window):
