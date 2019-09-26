@@ -46,10 +46,26 @@ class RequestHandler(BaseHTTPRequestHandler):
         form = cgi.FieldStorage(fp=self.rfile, headers=self.headers,
                             environ={'REQUEST_METHOD': 'POST'})
         query = str(form.getvalue("query"))
-        limit = int(form.getvalue("limit"))
-        offset = int(form.getvalue("offset"))
-        doc_lim = int(form.getvalue("doc_lim"))
-        doc_off = int(form.getvalue("doc_off"))
+        limit = form.getvalue("limit")
+        if not limit:
+            limit = 10
+        else:
+            limit = int(limit)
+        offset = form.getvalue("offset")
+        if not offset:
+            offset = 0
+        else:
+            offset = int(offset)
+        doc_lim = form.getvalue("doc_lim")
+        if not doc_lim:
+            doc_lim = 3
+        else:
+            doc_lim = int(doc_lim)
+        doc_off = form.getvalue("doc_off")
+        if not doc_off:
+            doc_off = 0
+        else:
+            doc_off = int(doc_off)
         #engine = SearchEngine('database')
         #search = engine.search_extended_context(query, 3)
         search = self.server.search_engine.search_extended_context(query, 2)
