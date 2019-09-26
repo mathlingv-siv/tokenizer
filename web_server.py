@@ -31,7 +31,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                             quotes in each starting from the
                             <input type="number" name="doc_off" value="%d"/>
                             one,
-                            if these values are not yet specified
+                            if these values are not specified in the fields below
                         </form>
                     </body>
                 </html>
@@ -90,7 +90,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                             quotes in each starting from the
                             <input type="number" name="doc_off" value="%d"/>
                             one,
-                            if these values are not yet specified""" % (query, limit, offset, doc_lim, doc_off), encoding="utf-8"))
+                            if these values are not specified in the fields below
+                            """ % (query, limit, offset, doc_lim, doc_off), encoding="utf-8"))
         # ordered file list
         self.wfile.write(bytes('<ol>', encoding="utf-8"))
         if not search:
