@@ -99,11 +99,15 @@ class RequestHandler(BaseHTTPRequestHandler):
                 # the number of the document in the search results
                 # (doc0limit, doc0offset, doc1limit, doc1offset...)
                 self.wfile.write(bytes("""
-                        show
+                        <label for="doc%dlimit">show
                         <input type="number" name="doc%dlimit" value="%d"/>
+                        </label>
+                        <label for="doc%doffset">
                         quotes starting from the
                         <input type="number" name="doc%doffset" value="%d"/>
-                        one""" % (i, doc_limit, i, doc_offset), encoding="utf-8"))
+                        one
+                        </label>""" % (i, i, doc_limit, i, i, doc_offset), 
+                                       encoding="utf-8"))
                 # unordered quote list
                 self.wfile.write(bytes('<ul>', encoding="utf-8"))
                 # show doc_limit quotes starting from doc_offset
