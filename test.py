@@ -62,6 +62,15 @@ class TestContextWindows(unittest.TestCase):
         result = self.s.limit_quote_search("test", 1, 0, [(3, 1)])
         output = {'test.txt': [' professor required to write a <b>test</b> first']}
         self.assertEqual(result, output)
+        
+    def test_limit_quote_less(self):
+        """test if the program is working correctly
+        when searching for contexts windows startign from
+        one that's not in the file
+        """
+        result = self.s.limit_quote_search("test", 1, 0, [(1, 4)])
+        output = {'test.txt': []}
+        self.assertEqual(result, output)
 
     def test_limit_doc(self):
         """test if the program is working correctly
