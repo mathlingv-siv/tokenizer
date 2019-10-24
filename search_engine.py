@@ -253,8 +253,11 @@ class SearchEngine(object):
         dic = self.limit_search(query, limit, offset)
         dic_searched = {}
         pairs_list = list(quotes_per_doc)
-        sorted_doc_list = sorted(dic)
-        for pair in zip(sorted_doc_list, pairs_list):
+        doc_list = list(dic)
+        # go through both the document list
+        # and the list of pairs binding
+        # together filenames and quote requirements
+        for pair in zip(doc_list, pairs_list):
             for filename, contexts in dic.items():
                 if pair[0] == filename:
                     contexts_searched = contexts[pair[1][1]:pair[1][0]+pair[1][1]]
