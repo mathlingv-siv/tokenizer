@@ -53,10 +53,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         if not offset:
             offset = 0
         else:
-            offset = int(offset)        
-        #engine = SearchEngine('database')
-        #search = engine.search_extended_context(query, 3)
-        search = self.server.search_engine.search_extended_context(query, 2)
+            offset = int(offset)                
         self.send_response(200)
         self.send_header("Content-type", "text/html; charset=utf-8")
         self.end_headers()
@@ -68,7 +65,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                             <input type="submit" value="Search"/>
                             <br>
                             <br>
-                            <label for="limit"> show 
+                            <label for="limit">show 
                             <input type="number" name="limit" value="%d"/>
                             </label>
                             <label for="offset">
@@ -76,50 +73,53 @@ class RequestHandler(BaseHTTPRequestHandler):
                             <input type="number" name="offset" value="%d"/>
                             one
                             </label>""" % (query, limit, offset), encoding="utf-8"))
+        # create a list of pairs (limit, offset) for quotes
+        # in each document to pass it to the search function
+        n = 0
+        quotes_per_doc = []
+        while n < limit:
+            doc_limit = form.getvalue("doc%dlimit" % n)
+            doc_offset = form.getvalue("doc%doffset" % n)
+            if not doc_limit:
+                doc_limit = 3
+            else:
+                doc_limit = int(doc_limit)
+            if not doc_offset:
+                doc_offset = 0
+            else:
+                doc_offset = int(doc_offset)
+            quotes_per_doc.append((doc_limit, doc_offset))
+            n+=1        
+        search = self.server.search_engine.limit_quote_search(query, limit, offset, quotes_per_doc)
         # ordered file list
         self.wfile.write(bytes('<ol>', encoding="utf-8"))
         if not search:
             self.wfile.write(bytes('Not Found', encoding="utf-8"))        
-        for i, filename in enumerate(search):
-            # show limit documents starting from offset
-            if i >= offset and i < limit+offset:                
-                self.wfile.write(bytes('<li><p>%s</p></li>' % filename, encoding="utf-8"))
-                # create limit and offset for each document
-                doc_limit = form.getvalue("doc%dlimit" % i)
-                doc_offset = form.getvalue("doc%doffset" % i)
-                if not doc_limit:
-                    doc_limit = 3
-                else:
-                    doc_limit = int(doc_limit)
-                if not doc_offset:
-                    doc_offset = 0
-                else:
-                    doc_offset = int(doc_offset)
-                # generate field names taking into account
-                # the number of the document in the search results
-                # (doc0limit, doc0offset, doc1limit, doc1offset...)
-                self.wfile.write(bytes("""
-                        <label for="doc%dlimit">show
-                        <input type="number" name="doc%dlimit" value="%d"/>
-                        </label>
-                        <label for="doc%doffset">
-                        quotes starting from the
-                        <input type="number" name="doc%doffset" value="%d"/>
-                        one
-                        </label>""" % (i, i, doc_limit, i, i, doc_offset), 
-                                       encoding="utf-8"))
-                # unordered quote list
-                self.wfile.write(bytes('<ul>', encoding="utf-8"))
-                # show doc_limit quotes starting from doc_offset
-                for n, window in enumerate(search[filename]):
-                    if n >= doc_offset and n < doc_limit + doc_offset:
-                        quote = window.highlight()
-                        self.wfile.write(bytes('<li><p>%s</p></li>' % quote, encoding="utf-8"))
-                    if n == doc_limit + doc_offset:
-                        break
-                self.wfile.write(bytes('</ul>', encoding="utf-8"))
-            if i == limit+offset:
-                break
+        for i, filename in enumerate(search):               
+            self.wfile.write(bytes('<li><p>%s</p>' % filename, encoding="utf-8"))
+            # create limit and offset for each document            
+            quote_limit = quotes_per_doc[i][0]
+            quote_offset = quotes_per_doc[i][1]
+            # field names that take into account
+            # the number of the document in the output
+            self.wfile.write(bytes("""
+                    <label for="doc%dlimit">show
+                    <input type="number" name="doc%dlimit" value="%d"/>
+                    </label>
+                    <label for="doc%doffset">
+                    quotes starting from the
+                    <input type="number" name="doc%doffset" value="%d"/>
+                    one
+                    </label>""" % (i, i, quote_limit, i, i, quote_offset),
+                                   encoding="utf-8"))            
+            # unordered quote list
+            self.wfile.write(bytes('<ul>', encoding="utf-8"))
+            # show quote_limit quotes starting from quote_offset
+            if not search[filename]:
+                self.wfile.write(bytes('<br>Not Found', encoding="utf-8"))
+            for window in search[filename]:
+                self.wfile.write(bytes('<li><p>%s</p></li>' % window, encoding="utf-8"))                
+            self.wfile.write(bytes('</ul></li>', encoding="utf-8"))            
         self.wfile.write(bytes("""</ol></form></body></html>""", encoding="utf-8"))
 
 
